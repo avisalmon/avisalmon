@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h1>Project {{ project.title }}</h1><br>
+<p>{{ project.description|safe }}</p>
+<img src="{{ project.image.url }}" alt="" height=200><br><br>
+<a href="{{ project.url }}" class="btn btn-primary" target="_blank"">"Goto the detailed linked page</a>
+<br><br>
+<a href="{% url 'portfolio:portfolio' %}" >Back to Project listing</a>
+
+{% endblock content %}
