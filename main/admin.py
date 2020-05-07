@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Profile, UserLink, UserExperience, UserHobby
 
-# Register your models here.
+admin.site.register(Profile)
+admin.site.register(UserLink)
+admin.site.register(UserExperience)
+admin.site.register(UserHobby)
