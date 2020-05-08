@@ -18,11 +18,13 @@ from django.urls import path, include
 from main import views as main_views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.home, name='home'),
-    path('junk/', main_views.junk, name='junk'),
+    path('accounts/signup/', main_views.signup, name="signup"),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('randg/', include('randg.urls')),
     path('portfolio/', include('portfolio.urls')),
 ]

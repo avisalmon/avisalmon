@@ -54,10 +54,17 @@
       </div>
     </nav>
 
-
   </div>
 
 <div class="container">
+      {% if user.is_authenticated %}
+        <p>Looged in as <b>{{ user.username}}</b>  <a href="{% url 'logout' %}">Log out</a></p>
+      {% else %}
+        <p>
+          <a href="{% url 'login' %}">Login</a>...
+          <a href="{% url 'signup' %}">Sign Up</a>...
+        </p>
+      {% endif %}
       {% block content %}{% endblock %}
 </div>
 
