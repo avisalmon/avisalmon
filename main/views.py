@@ -6,10 +6,8 @@ from . import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.db import IntegrityError
 
-
-def junk(request):
-    return render(request, 'main/junk.html')
 
 def home(request):
     return render(request, 'main/home.html')
@@ -17,18 +15,23 @@ def home(request):
 
 def signup(request):
     if request.method == 'GET':
-        return render(request, 'registration/signup.html', {'form':UserCreationForm()})
+        return render(request, 'registration/signup.html', {'form':forms.UserCreateForm()})
     else:
-        form = UserCreationForm(request.POST)
+        form = forms.UserCreateForm(request.POST)
+        print(f'Form::: \n{form.errors}')
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            email = form.cleaned_data.get('email')
+            authenticate( username=username,password=raw_password)
+            user = User.objects.get(username=username)
             login(request, user)
             return redirect('home')
+
         else:
-            return render(request, 'registration/signup.html', {'form':UserCreationForm(), 'error': 'Try again...'})
+            error = form.errors
+            return render(request, 'registration/signup.html', {'form':forms.UserCreateForm(), 'error': error})
 
         # if request.POST['password1'] == request.POST['password2']:
         #     try:

@@ -1,6 +1,10 @@
 {% extends "main/base.html" %}
 
 {% block content %}
+{% if error %}
+<h3>Something went wrong:</h3>
+<p color='red'>{{ error }}</p>
+{% endif %}
 
   <h2>Sign up</h2>
   <form method="post">
