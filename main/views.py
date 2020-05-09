@@ -18,15 +18,16 @@ def signup(request):
         return render(request, 'registration/signup.html', {'form':forms.UserCreateForm()})
     else:
         form = forms.UserCreateForm(request.POST)
-        print(f'Form::: \n{form.errors}')
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             email = form.cleaned_data.get('email')
-            authenticate( username=username,password=raw_password)
+            authenticate( username=username,password=raw_password, backend='django.contrib.auth.backends.ModelBackend')
             user = User.objects.get(username=username)
+            print(f'Login 0 - {user}')
             login(request, user)
+            print('Login 1')
             return redirect('home')
 
         else:
