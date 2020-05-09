@@ -33,12 +33,12 @@ ALLOWED_HOSTS = ['avisalmon.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'main',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
     'randg',
     'portfolio',
 ]
@@ -105,9 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # The bellow email backend will pront omn the consol for testing
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SMTP backend:
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '<-- This should contain an email API key -->'
