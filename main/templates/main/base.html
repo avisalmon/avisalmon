@@ -1,5 +1,6 @@
 <!doctype html>
 {% load static %}
+{% load socialaccount %}
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -58,11 +59,14 @@
 
 <div class="container">
       {% if user.is_authenticated %}
-        <p>Looged in as <b>{{ user.username}}</b>  <a href="{% url 'logout' %}">Log out</a></p>
+        <p>Looged in as <b>{{ user.username}} </b>  <a href="{% url 'logout' %}">Log out</a></p>
       {% else %}
         <p>
           <a href="{% url 'login' %}">Login</a>...
           <a href="{% url 'signup' %}">Sign Up</a>...
+          <a href="{% provider_login_url 'github' %}">Login with GitHub</a>...
+          <a href="{% provider_login_url 'google' %}">Login with Google</a>...
+          <a href="{% provider_login_url 'facebook' %}">Login with FaceBook</a>...
         </p>
       {% endif %}
       {% block content %}{% endblock %}

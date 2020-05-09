@@ -25,6 +25,7 @@ urlpatterns = [
     path('', main_views.home, name='home'),
     path('accounts/signup/', main_views.signup, name="signup"),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('randg/', include('randg.urls')),
     path('portfolio/', include('portfolio.urls')),
 ]

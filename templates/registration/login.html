@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load socialaccount %}
 
 {% block content %}
 
@@ -33,5 +34,9 @@
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+  <hr>
+  <p><a href="{% provider_login_url 'github' %}">Login with GitHub</a></p>
+  <p><a href="{% provider_login_url 'google' %}">Login with Google</a></p>
+  <p><a href="{% provider_login_url 'facebook' %}">Login with FaceBook</a></p>
 
 {% endblock %}
