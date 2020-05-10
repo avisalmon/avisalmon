@@ -115,9 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # instraction for reset password etc
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
 # The bellow email backend will pront omn the consol for testing
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SMTP backend:
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '<-- This should contain an email API key -->'
@@ -146,25 +146,17 @@ LOGOUT_REDIRECT_URL = '/'
 # https://medium.com/@whizzoe/in-5-mins-set-up-google-login-to-sign-up-users-on-django-e71d5c38f5d5
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
-    #'django.contrib.auth.backends.ModelBackend',
+#    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 
 )
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    },
-    'facebook':
-       {'METHOD': 'oauth2',
-        'SCOPE': ['email','public_profile', 'user_friends'],
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
         'FIELDS': [
             'id',
             'email',
@@ -176,12 +168,24 @@ SOCIALACCOUNT_PROVIDERS = {
             'timezone',
             'link',
             'gender',
-            'updated_time'],
+            'updated_time',
+        ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: 'kr_KR',
+        'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
-        'VERSION': 'v2.4'}
+        'VERSION': 'v2.12',
+    },
+     'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
 }
+
 
 
 
