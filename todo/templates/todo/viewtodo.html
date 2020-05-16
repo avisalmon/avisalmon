@@ -1,0 +1,55 @@
+
+{% extends "main/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h2>Todo</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" id="title" value="{{ todo.title }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="memo">Memo</label>
+                    <textarea name="memo" rows="5" class="form-control" id="memo" >{{ todo.memo }}</textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="important" class="form-check-input" id="important" {% if todo.important %}checked{% endif %}>
+                    <label class="form-check-label" for="important">Important</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                {% if todo.datecompleted is None %}
+                <a class="btn btn-success" href="{% url 'todo:completetodo' todo.id %}">Complete</a>
+                {% endif %}
+                <a class="btn btn-danger" href="{% url 'todo:deletetodo' todo.id %}">Delete</a>
+            </form>
+        </div>
+
+    </div>
+    <div class="container">
+
+    </div>
+
+    {% if todo.datecompleted is not None %}
+        <form style='display: none;' method="POST" action="{% url 'todo:completetodo' todo.id %}">
+            {% csrf_token %}
+            <button type="button" id="complete" type="submit">Complete</button>
+        </form>
+    {% endif %}
+    <form style='display: none;' method="POST" action="{% url 'todo:deletetodo' todo.id %}">
+        {% csrf_token %}
+        <button id="delete" type="submit">Delete</button>
+    </form>
+    <p><a href="{% url 'todo:todo_list_view' %}"> Go back to all your Todo`s</a></p>
+{% endblock %}

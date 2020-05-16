@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'main',
     'randg',
     'portfolio',
+    'todo',
 ]
 
 MIDDLEWARE = [

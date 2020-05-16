@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>The ToDo project</h2>
+  <p>This project example was implemented with function based views. see
+  <a href="https://github.com/avisalmon/avisalmon" target="_blank">Githu</a>
+  >All is implemented in the /todo app
+  </p>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+
+
+        {% if todos %}
+             <h1>{{ todos.count }} Current Todo{{ todos.count|pluralize }}</h1>
+        {% else %}
+                       <h1>Current Todos</h1>
+        {% endif %}
+        <a role="button" class="btn btn-primary" href="{% url 'todo:todo_create_view' %}">New Todo</a>
+        <a role="button" class="btn btn-success" href="{% url 'todo:completedtodos' %}">Completed tasks</a>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+    {% if todos %}
+        <div class="list-group">
+            {% for todo in todos %}
+              <a href="{% url 'todo:todo_detail_view' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}"><b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}</a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h2>Looks like you don't have any todos! Nice work.</h2>
+        <br>
+        </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -28,6 +28,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('randg/', include('randg.urls')),
     path('portfolio/', include('portfolio.urls')),
+    path('todo/', include('todo.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
