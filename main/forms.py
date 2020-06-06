@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .models import Profile
 
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True,
@@ -29,3 +30,15 @@ class UserCreateForm(UserCreationForm):
         if User.objects.filter(email=self.cleaned_data['email']).exists():
             raise ValidationError(self.fields['email'].error_messages['exists'])
         return self.cleaned_data['email']
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email','first_name','last_name')
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('bio', 'location', 'birth_date', 'image') #Note that we didn't mention user field here.

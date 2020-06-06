@@ -37,6 +37,7 @@
               Django example pages
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="https://github.com/avisalmon/avisalmon">Site source on GitHub</a>
               <a class="dropdown-item" href="{% url 'randg:randg' %}">Password generator</a>
               <a class="dropdown-item" href="{% url 'portfolio:portfolio' %}">Personal Projects demo</a>
               <a class="dropdown-item" href="{% url 'todo:todo_list_view' %}">Todo Projects demo</a>
@@ -60,7 +61,9 @@
 
 <div class="container">
       {% if user.is_authenticated %}
-        <p>Looged in as <b>{{ user.username}} </b>  <a href="{% url 'logout' %}">Log out</a></p>
+        <p>Looged in as <b>{{ user.username}} </b>  <a href="{% url 'logout' %}">Log out</a>
+        <a href="{% url 'main:my_profile_view' %}">  |  See your profile</a>
+      </p>
       {% else %}
         <p>
           <a href="{% url 'login' %}">Login</a>...

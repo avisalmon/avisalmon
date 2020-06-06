@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from django.views.generic import (DetailView, UpdateView)
+from .models import Profile
+from .forms import EditProfileForm, ProfileForm
 
 
 def home(request):
@@ -48,3 +51,41 @@ def signup(request):
         #                        'error':'That username has already been taken. Please choose a new username'})
         # else:
         #     return render(request, 'main/signup_local.html', {'form':UserCreationForm(), 'error':'Passwords did not match'})
+
+
+@login_required
+def my_profile_view(request):
+    profile = Profile.objects.get(user=request.user)
+    context = {
+        'profile': profile
+    }
+    template = 'main/profile.html'
+    return render(request, template, context)
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)  # request.FILES is show the selected image or file
+        print('Hi')
+        if form.is_valid() and profile_form.is_valid():
+            user_form = form.save()
+            custom_form = profile_form.save(False)
+            custom_form.user = user_form
+            custom_form.save()
+            return redirect('main:my_profile_view')
+        else:
+            context = {}
+            context['form'] = EditProfileForm(instance=request.user)
+            context['profile_form'] = ProfileForm(instance=request.user.profile)
+            context['errors'] = 'You got errors. Try again'
+            return render(request, 'main/edit_profile.html', context)
+
+    else:
+        form = EditProfileForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+        context = {}
+        # args.update(csrf(request))
+        context['form'] = form
+        context['profile_form'] = profile_form
+        return render(request, 'main/edit_profile.html', context)
