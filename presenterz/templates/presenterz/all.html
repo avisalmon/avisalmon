@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+{% for lecture in all_lectures %}
+  <h2><u><b>{{ lecture.title }}</b></u></h2><i> {{ lecture.created|date:"N Y" }}</i>
+
+  <p>{{ lecture.description }}</p>
+  {% if lecture.url %}<p><a href={{ lecture.url }}>More info</a></p>{% endif %}
+  <h3>About the speaker:</h3>
+    <p>{{ lecture.user.first_name }} {{ lecture.user.last_name}}:
+    <i>{{ lecture.user.profile.bio|safe|truncatechars:50}}
+    <a href={% url 'main:profile' lecture.user.pk %}>...read more...</a></i>
+    </p>
+    {% if lecture.user.profile.image %}
+    <img src={{ lecture.user.profile.image.url }} alt="" height=100>
+    {% endif %}
+
+<hr>
+{% endfor %}
+
+{% endblock %}

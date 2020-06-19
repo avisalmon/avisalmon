@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'randg',
     'portfolio',
     'todo',
+    'presenterz'
 ]
 
 MIDDLEWARE = [

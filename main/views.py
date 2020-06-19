@@ -89,3 +89,12 @@ def edit_profile(request):
         context['form'] = form
         context['profile_form'] = profile_form
         return render(request, 'main/edit_profile.html', context)
+
+@login_required
+def profile_view(request, profile_pk):
+    profile = get_object_or_404(Profile, pk=profile_pk)
+    context = {
+        'profile': profile
+    }
+    template = 'main/profile_details.html'
+    return render(request, template, context)
