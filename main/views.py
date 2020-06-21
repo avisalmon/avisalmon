@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from . import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
@@ -28,7 +29,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             email = form.cleaned_data.get('email')
             authenticate( username=username,password=raw_password, backend='django.contrib.auth.backends.ModelBackend')
-            user = User.objects.get(username=username)
+            user = get_user_model().objects.get(username=username)
             print(f'Login 0 - {user}')
             login(request, user)
             print('Login 1')

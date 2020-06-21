@@ -1,7 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 
 BIO_MAX_LENGTH = 12800
 DESCRIPTION_MAX_LENGTH = 120
@@ -17,7 +18,7 @@ FIELD_MAX_DIGITS = 10
 FIELD_DECIMAL_PLACES = 8
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -26,12 +27,12 @@ class Profile(models.Model):
     def __str__(self):
         return f'Profile for {self.user}'
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=get_user_model())
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=get_user_model())
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
@@ -44,7 +45,7 @@ class UserLink(models.Model):
                                     blank=True)
     username = models.TextField(max_length=MAX_USERNAME_LENGTH,
                                 null=True)
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              blank=True,
                              on_delete=models.CASCADE,
                              related_name='links')
@@ -68,7 +69,7 @@ class UserExperience(models.Model):
     description = models.CharField(max_length=LONG_DESCRIPTION_MAX_LENGTH,
                                    blank=True,
                                    null=True)
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              blank=True,
                              on_delete=models.CASCADE,
                              related_name='experiences')
@@ -84,7 +85,7 @@ class UserHobby(models.Model):
     icon = models.CharField(max_length=FIELD_MAX_LENGTH, default="dice-d20")
     color = models.CharField(max_length=FIELD_MAX_LENGTH, default="#4169e1")
 
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              blank=True,
                              on_delete=models.CASCADE,
                              related_name='hobbies')
