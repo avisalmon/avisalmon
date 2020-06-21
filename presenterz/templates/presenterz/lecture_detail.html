@@ -1,0 +1,42 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Lecture: {{ lecture.title}}</h1>
+      <a href={% url 'presenterz:all_lectures' %}>See all lectures  </a>
+      {% if lecture.user == user %}
+      <a href={% url 'presenterz:lecture_update' lecture.pk %}> / Edit</a>
+      {% endif %}
+      <a href={% url 'main:profile' lecture.user.id %}>
+      <p><i>{{ lecture.user.first_name }} {{ lecture.user.last_name }}</i></p>
+      </a>
+      <hr>
+      <p>{{ lecture.description }}</p>
+      {% if lecture.image %}
+      <img src="{{ lecture.image.url }}" alt="" height=200>
+      {% endif %}
+      {% if lecture.url %}
+      <a href="{{ lecture.url }}">
+      <p>More Info...</p>
+      </a>
+      {% endif %}
+    </div>
+    <div class="col">
+      <h1>Coming lectures:</h1>
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

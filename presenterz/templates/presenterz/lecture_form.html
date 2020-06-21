@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>Create/update a new lecture</h1>
+{% if lecture %}
+<a href={% url 'presenterz:lecture_delete' lecture.pk  %}>Delete this lecture</a>
+{% endif %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+
+{% endblock %}

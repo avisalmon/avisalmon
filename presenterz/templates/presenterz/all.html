@@ -1,21 +1,34 @@
 {% extends "main/base.html" %}
+{% load static %}
 {% block content %}
+<h1>PRESENTERZ</h1>
+<h2>Home site for the speakers community</h2>
+<a href={% url 'presenterz:lecture_create' %}>
+<button type="button" class="btn btn-success">New Lecture</button>
+</a>
+<div class="container">
+  <div class="row">
+    {% for lecture in all_lectures %}
+    <div class="card col-md-4 border-primary">
+      <a href={% url 'presenterz:lecture_details' lecture.pk %}>
+      <h2><u><b>{{ lecture.title }}</b></u></h2><i> {{ lecture.created|date:"N Y" }}</i>
+      </a>
+      <p>{{ lecture.description|safe|truncatechars:150 }}
+        <a href={% url 'presenterz:lecture_details' lecture.pk %}>...read more</a>
+      </p>
+      {% if lecture.url %}<p><a href={{ lecture.url }}>More info</a></p>{% endif %}
+      <b><p>About the speaker:</p></b>
+        <p>{{ lecture.user.first_name }} {{ lecture.user.last_name}}:
+        <i>{{ lecture.user.profile.bio|safe|truncatechars:50}}
+        <a href={% url 'main:profile' lecture.user.pk %}>...read more about {{ lecture.user.first_name}}</a></i>
+        </p>
 
-{% for lecture in all_lectures %}
-  <h2><u><b>{{ lecture.title }}</b></u></h2><i> {{ lecture.created|date:"N Y" }}</i>
+    </div>
 
-  <p>{{ lecture.description }}</p>
-  {% if lecture.url %}<p><a href={{ lecture.url }}>More info</a></p>{% endif %}
-  <h3>About the speaker:</h3>
-    <p>{{ lecture.user.first_name }} {{ lecture.user.last_name}}:
-    <i>{{ lecture.user.profile.bio|safe|truncatechars:50}}
-    <a href={% url 'main:profile' lecture.user.pk %}>...read more...</a></i>
-    </p>
-    {% if lecture.user.profile.image %}
-    <img src={{ lecture.user.profile.image.url }} alt="" height=100>
-    {% endif %}
+    {% endfor %}
 
-<hr>
-{% endfor %}
+  </div>
+
+</div>
 
 {% endblock %}
