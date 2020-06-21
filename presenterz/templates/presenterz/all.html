@@ -20,7 +20,7 @@
       <b><p>About the speaker:</p></b>
         <p>{{ lecture.user.first_name }} {{ lecture.user.last_name}}:
         <i>{{ lecture.user.profile.bio|safe|truncatechars:50}}
-        <a href={% url 'main:profile' lecture.user.pk %}>...read more about {{ lecture.user.first_name}}</a></i>
+        <a href={% url 'main:profile' lecture.user.profile.pk %}>...read more about {{ lecture.user.first_name}}</a></i>
         </p>
 
     </div>
