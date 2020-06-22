@@ -11,6 +11,6 @@ User: {{ user }}<br>
 <img src="{{ user.profile.image.url }}" alt="" width=15% >
 {% endif %}
 <p><u><b>Bio:</b></u></p>
-<p>  {{ user.profile.bio }}</p>
+<p>  {{ user.profile.bio|safe }}</p>
 <p><b>Birthday: </b>{{ user.profile.birth_date|date }}</p>
 {% endblock %}

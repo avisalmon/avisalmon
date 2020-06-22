@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from tinymce.models import HTMLField
 
 class Lecture(models.Model):
     title = models.CharField(max_length=250)
-    description = models.TextField(max_length=500)
+    description = HTMLField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='presenterx/images/', blank=True)
     url = models.URLField(max_length=150, blank=True)

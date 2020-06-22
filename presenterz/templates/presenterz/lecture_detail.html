@@ -15,7 +15,7 @@
       <p><i>{{ lecture.user.first_name }} {{ lecture.user.last_name }}</i></p>
       </a>
       <hr>
-      <p>{{ lecture.description }}</p>
+      <p>{{ lecture.description|safe }}</p>
       {% if lecture.image %}
       <img src="{{ lecture.image.url }}" alt="" height=200>
       {% endif %}

@@ -3,12 +3,15 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 #from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from tinymce.widgets import TinyMCE
 from .models import Profile
 
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True,
                          label='Email',
                          error_messages={'exists': 'Such email exists in the system'})
+
+    bio = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
     class Meta:
         fields = ("username", "email", "password1", "password2")
@@ -33,6 +36,7 @@ class UserCreateForm(UserCreationForm):
 
 
 class EditProfileForm(forms.ModelForm):
+
     class Meta:
         model = get_user_model()
         fields = ('email','first_name','last_name')

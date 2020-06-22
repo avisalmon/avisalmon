@@ -23,6 +23,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.home, name='home'),
+    path('markdownx/', include('markdownx.urls')),
     path('main/', include('main.urls')),
     path('presenterz/', include('presenterz.urls')),
     path('accounts/signup/', main_views.signup, name="signup"),
