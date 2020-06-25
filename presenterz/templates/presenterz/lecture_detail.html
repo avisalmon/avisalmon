@@ -11,7 +11,7 @@
       {% if lecture.user == user %}
       <a href={% url 'presenterz:lecture_update' lecture.pk %}> / Edit</a>
       {% endif %}
-      <a href={% url 'main:profile' lecture.user.id %}>
+      <a href={% url 'main:profile' lecture.user.profile.id %}>
       <p><i>{{ lecture.user.first_name }} {{ lecture.user.last_name }}</i></p>
       </a>
       <hr>
@@ -27,11 +27,16 @@
     </div>
     <div class="col">
       <h1>Coming lectures:</h1>
+
       <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
+        {% for session in sessions %}
+        <li>{{ session.location }} - {{ session.time|date:"d N Y H:i"}}</li>
+        {% endfor %}
+
       </ul>
+
+      <a href={% url 'presenterz:session_create' lecture_pk=lecture.pk %}>Add a new session</a>
+  
     </div>
 
   </div>

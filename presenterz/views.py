@@ -4,7 +4,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from .models import Lecture
+from .models import Lecture, Session
+from .forms import SessionCreateForm
+
 
 def presenterz(request):
     #todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -25,6 +27,12 @@ class LectureListView(ListView):
 
 class LectureDetailView(DetailView):
     model = Lecture
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sessions'] = Session.objects.filter(lecture_id=self.kwargs.get('pk'))
+        return context
+
 
 class LectureCreateView(LoginRequiredMixin, CreateView):
     model = Lecture
@@ -55,6 +63,24 @@ class LectureUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('presenterz:all_lectures')
 
 
-class LectureDeleteView(DeleteView):
+class LectureDeleteView(LoginRequiredMixin, DeleteView):
     model = Lecture
     success_url = reverse_lazy('presenterz:all_lectures')
+
+
+class SessionCreateView(LoginRequiredMixin, CreateView):
+    model = Session
+    form_class = SessionCreateForm
+#    fields = ['location', 'time', 'length', 'link']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['lecture'] = Lecture.objects.get(pk=self.kwargs.get('lecture_pk'))
+        return context
+
+    def form_valid(self, form):
+        lecture = Lecture.objects.get(pk=self.kwargs.get('lecture_pk'))
+        if lecture.user != self.request.user:
+            return redirect('presenterz:lecture_details', pk=lecture.pk)
+        form.instance.lecture = lecture
+        return super().form_valid(form)

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from tinymce.models import HTMLField
+from django.utils import timezone
+from django.shortcuts import reverse
 
 class Lecture(models.Model):
     title = models.CharField(max_length=250)
@@ -12,3 +14,17 @@ class Lecture(models.Model):
 
     def __str__(self):
             return self.title + ' by ' + str(self.user)
+
+
+class Session(models.Model):
+    lecture = models.ForeignKey(Lecture, related_name='sessions', on_delete=models.CASCADE)
+    location = models.CharField(max_length = 30, default='Not specified')
+    time = models.DateTimeField(default=timezone.now())
+    length = models.IntegerField(default=60)
+    link = models.URLField(max_length=200, blank=True)
+
+    def __str__(self):
+        return str(self.lecture) + ' - ' + self.location + ' - ' + str(self.time)
+
+    def get_absolute_url(self):
+        return reverse('presenterz:lecture_details', kwargs={'pk': self.lecture.pk})

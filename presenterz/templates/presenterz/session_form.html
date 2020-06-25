@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<p>You are assigning a session for the Lecture: {{ lecture}}</p>
+<form class=""  method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create New session">
+</form>
+
+
+{% endblock %}

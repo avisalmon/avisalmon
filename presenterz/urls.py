@@ -18,4 +18,7 @@ urlpatterns = [
           name='lecture_update'),
     path('delete/<int:pk>', views.LectureDeleteView.as_view(),
           name='lecture_delete'),
+    path('session/create/<int:lecture_pk>',
+         views.SessionCreateView.as_view(),
+         name='session_create'),
 ]
