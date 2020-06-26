@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<h1>Lecture {{ session.lecture.title }} by
+  {{ session.lecture.user.first_name }}
+  {{ session.lecture.user.last_name }}</h1>
+
+<p>Place: {{ session.location }}</p>
+ <p>Time: {{ session.time }}</p>
+ <p>{{ session.length}} minutes</p>
+ {% if session.link %}
+ <p><a href={{ session.link.url }}>Link to registration</a></p>
+ {% endif %}
+ <hr>
+ <p><b><a href={% url 'presenterz:lecture_details' session.lecture.pk %}>Back to lecture</a></b></p>
+
+
+{% endblock %}

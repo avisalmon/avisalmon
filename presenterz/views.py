@@ -70,8 +70,11 @@ class LectureDeleteView(LoginRequiredMixin, DeleteView):
 
 class SessionCreateView(LoginRequiredMixin, CreateView):
     model = Session
-    form_class = SessionCreateForm
-#    fields = ['location', 'time', 'length', 'link']
+#    form_class = SessionCreateForm
+    # don't apply lecture in the form - will be in thr kwargs
+    # don;t show the time, it will be manualy handled in HTML
+    #  and form_valid since I want to add datetime picker
+    fields = ['location', 'length', 'link']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,5 +85,33 @@ class SessionCreateView(LoginRequiredMixin, CreateView):
         lecture = Lecture.objects.get(pk=self.kwargs.get('lecture_pk'))
         if lecture.user != self.request.user:
             return redirect('presenterz:lecture_details', pk=lecture.pk)
+        form.instance.time = self.request.POST.get('time')
         form.instance.lecture = lecture
+        return super().form_valid(form)
+
+
+class SessionDetailView(DetailView):
+    model=Session
+
+class SessionUpdateView(UpdateView):
+    model = Session
+    template_name = 'presenterz/session_update.html'
+    fields = ['location', 'length', 'link']
+    success_url = 'ynet.co.il'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        session = Session.objects.get(pk=self.kwargs.get('pk'))
+        context['session'] = session
+        return context
+
+    def get_success_url(self):
+        print("I am in get_success_url")
+        return reverse('presenterz:lecture_details', kwargs={'pk': self.lecture.pk})
+
+    def form_valid(self, form):
+        lecture = self.lecture #request.POST.get('lecture')
+        # if lecture.user != self.request.user:
+        #     return redirect('presenterz:lecture_details', pk=lecture.pk)
+        form.instance.time = self.request.POST.get('time')
         return super().form_valid(form)

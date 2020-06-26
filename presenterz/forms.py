@@ -1,6 +1,8 @@
 from django import forms
 from .models import Session
 
+# this file is not used. saving for history. 
+
 class MyDateTimeInput(forms.DateTimeInput):
     input_type = "datetime-local" # <input type="datetime-local" ... />
 
@@ -11,9 +13,9 @@ class MyDateTimeInput(forms.DateTimeInput):
 class SessionCreateForm(forms.ModelForm):
     class Meta:
         model = Session
-        fields = ['location', 'time', 'length', 'link']
+        fields = ['location', 'length', 'link']
 
-    time = forms.DateTimeField(
-        input_formats=["%Y-%m-%dT%H:%M"], # How to parse the POST form data
-        widget=MyDateTimeInput()
-    )
+    # time = forms.DateTimeField(
+    #     input_formats=["%Y-%m-%dT%H:%M"], # How to parse the POST form data
+    #     widget=MyDateTimeInput()
+    # )

@@ -2,11 +2,17 @@
 
 {% block content %}
 
-<p>You are assigning a session for the Lecture: {{ lecture}}</p>
+<p>You are assigning a session for the Lecture: {{ lecture }}</p>
 <form class=""  method="POST">
     {% csrf_token %}
     {{ form.as_p }}
+    <div class="form-group">
+      <small id="" class="form-text text-muted">pick the date and time of your session</small>
+      <label for="id_time">Time:</label>
+      <input type="datetime-local" name="time" required id="id_time">
+    </div>
     <input type="submit" value="Create New session">
+
 </form>
 
 

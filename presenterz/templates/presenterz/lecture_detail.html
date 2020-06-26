@@ -30,13 +30,14 @@
 
       <ul>
         {% for session in sessions %}
-        <li>{{ session.location }} - {{ session.time|date:"d N Y H:i"}}</li>
+        <a href={% url 'presenterz:session_details' session.pk %}><li>{{ session.location }} - {{ session.time|date:"d N Y H:i"}}</li></a>
         {% endfor %}
 
       </ul>
 
+      {% if lecture.user == user %}
       <a href={% url 'presenterz:session_create' lecture_pk=lecture.pk %}>Add a new session</a>
-  
+      {% endif %}
     </div>
 
   </div>

@@ -21,4 +21,10 @@ urlpatterns = [
     path('session/create/<int:lecture_pk>',
          views.SessionCreateView.as_view(),
          name='session_create'),
+    path('session/<int:pk>',
+         views.SessionDetailView.as_view(),
+         name='session_details'),
+    path('session/update/<int:pk>',
+         views.SessionUpdateView.as_view(),
+         name='update_session'),
 ]

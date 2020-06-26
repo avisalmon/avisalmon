@@ -27,4 +27,4 @@ class Session(models.Model):
         return str(self.lecture) + ' - ' + self.location + ' - ' + str(self.time)
 
     def get_absolute_url(self):
-        return reverse('presenterz:lecture_details', kwargs={'pk': self.lecture.pk})
+        return reverse('presenterz:session_details', kwargs={'pk': self.pk})

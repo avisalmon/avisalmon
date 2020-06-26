@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<h1>You are editing the session for {{ session.lecture }}</h1>
+
+<form class="" action="index.html" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <div class="form-group">
+    <small id="" class="form-text text-muted">pick the date and time of your session</small>
+    <label for="id_time">Time:</label>
+    <input type="datetime-local" name="time" required id="id_time" value="{{ session.time|date:"Y-m-d\TH:i"}}">
+  </div>
+  <input type="submit" value="Update session">
+</form>
+
+{% endblock %}
