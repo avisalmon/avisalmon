@@ -4,16 +4,27 @@
 
 <h1>You are editing the session for {{ session.lecture }}</h1>
 
-<form class="" action="index.html" method="post">
+  <form class="" method="post">
   {% csrf_token %}
   {{ form.as_p }}
-
   <div class="form-group">
     <small id="" class="form-text text-muted">pick the date and time of your session</small>
     <label for="id_time">Time:</label>
-    <input type="datetime-local" name="time" required id="id_time" value="{{ session.time|date:"Y-m-d\TH:i"}}">
+    <input type="datetime-local" name="time" value="{{ session.time|date:"Y-m-d\TH:i" }}" required id="id_time">
   </div>
+  <!-- <p><label for="id_location">Location:</label>
+  <input type="text" name="location" value={{ form.location }} maxlength="30" required id="id_location"></p>
+
+  <p><label for="id_time">Time:</label>
+  <input type="text" name="time" value={{ session.time|date:"Y-m-d\TH:i" }} required id="id_time"></p>
+
+  <p><label for="id_length">Length:</label>
+  <input type="number" name="length" value={{ session.length }} required id="id_length"></p>
+
+  <p><label for="id_link">Link:</label>
+  <input type="url" name="link" value={{ session.link }} maxlength="200" id="id_link"></p> -->
+
   <input type="submit" value="Update session">
-</form>
+  </form>
 
 {% endblock %}

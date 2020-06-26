@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .models import Lecture, Session
 from .forms import SessionCreateForm
-
+import datetime
 
 def presenterz(request):
     #todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -30,7 +30,7 @@ class LectureDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sessions'] = Session.objects.filter(lecture_id=self.kwargs.get('pk'))
+        context['sessions'] = Session.objects.filter(lecture_id=self.kwargs.get('pk'), time__gte=datetime.datetime.now()).order_by('time')
         return context
 
 
@@ -93,25 +93,26 @@ class SessionCreateView(LoginRequiredMixin, CreateView):
 class SessionDetailView(DetailView):
     model=Session
 
-class SessionUpdateView(UpdateView):
+
+class SessionUpdateView(LoginRequiredMixin, UpdateView):
     model = Session
     template_name = 'presenterz/session_update.html'
-    fields = ['location', 'length', 'link']
-    success_url = 'ynet.co.il'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        session = Session.objects.get(pk=self.kwargs.get('pk'))
-        context['session'] = session
-        return context
-
-    def get_success_url(self):
-        print("I am in get_success_url")
-        return reverse('presenterz:lecture_details', kwargs={'pk': self.lecture.pk})
+    fields = ['lecture', 'location', 'length', 'link']
 
     def form_valid(self, form):
-        lecture = self.lecture #request.POST.get('lecture')
-        # if lecture.user != self.request.user:
-        #     return redirect('presenterz:lecture_details', pk=lecture.pk)
+        lecture = Lecture.objects.get(pk=self.request.POST.get('lecture'))
+        if lecture.user != self.request.user:
+            return redirect('presenterz:lecture_details', pk=lecture.pk)
+        form.instance.time = self.request.POST.get('time')
+        return super().form_valid(form)
+
+class SessionDeleteView(LoginRequiredMixin, DeleteView):
+    model=Session
+    success_url = reverse_lazy('presenterz:all_lectures')
+
+    def form_valid(self, form):
+        lecture = Lecture.objects.get(pk=self.request.POST.get('lecture'))
+        if lecture.user != self.request.user:
+            return redirect('presenterz:lecture_details', pk=lecture.pk)
         form.instance.time = self.request.POST.get('time')
         return super().form_valid(form)

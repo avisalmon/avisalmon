@@ -4,6 +4,11 @@
 <h1>Lecture {{ session.lecture.title }} by
   {{ session.lecture.user.first_name }}
   {{ session.lecture.user.last_name }}</h1>
+  <hr>
+  {% if user == session.lecture.user %}
+  <b><p><a href={% url 'presenterz:session_update' session.pk %}>Edit</a></p></b>
+  <b><p><a href={% url 'presenterz:session_delete' session.pk %}>Delete</a></p></b>
+  {% endif %}
 
 <p>Place: {{ session.location }}</p>
  <p>Time: {{ session.time }}</p>

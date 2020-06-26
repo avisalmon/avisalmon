@@ -26,5 +26,8 @@ urlpatterns = [
          name='session_details'),
     path('session/update/<int:pk>',
          views.SessionUpdateView.as_view(),
-         name='update_session'),
+         name='session_update'),
+    path('session/delete/<int:pk>',
+         views.SessionDeleteView.as_view(),
+         name='session_delete'),
 ]
