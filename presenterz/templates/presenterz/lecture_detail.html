@@ -30,7 +30,14 @@
 
       <ul>
         {% for session in sessions %}
+        {% if session.pk in listed_to_session %}
+        <b><a href={% url 'presenterz:session_details' session.pk %}><li>{{ session.location }} - {{ session.time|date:"d N Y H:i"}}</li></a></b>
+        <b><a href={% url 'presenterz:participation_delete' session.pk %}>You are listed to this session - sign out</a></b>
+        {% else %}
         <a href={% url 'presenterz:session_details' session.pk %}><li>{{ session.location }} - {{ session.time|date:"d N Y H:i"}}</li></a>
+        <a href={% url 'presenterz:participation_create' session.pk %}>Sign up to thie session</a>
+        {% endif %}
+
         {% endfor %}
 
       </ul>

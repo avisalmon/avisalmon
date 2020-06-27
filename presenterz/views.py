@@ -4,9 +4,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from .models import Lecture, Session
+from .models import Lecture, Session, Participation
 from .forms import SessionCreateForm
 import datetime
+from django.db import IntegrityError
 
 def presenterz(request):
     #todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -30,7 +31,20 @@ class LectureDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sessions'] = Session.objects.filter(lecture_id=self.kwargs.get('pk'), time__gte=datetime.datetime.now()).order_by('time')
+        sessions = Session.objects.filter(lecture_id=self.kwargs.get('pk'), time__gte=datetime.datetime.now()).order_by('time')
+        context['sessions'] = sessions
+        print(f'User is: {self.request.user}')
+        listed_to_session = []
+        for session in sessions:
+            print(session)
+            for participant in session.participants.all():
+                print(f'Session: {session} / participant: {participant}')
+                if participant == self.request.user:
+                    listed_to_session.append(session.pk)
+                    print(f'The user is listed to session {listed_to_session}')
+        print(f'writing to context {listed_to_session}')
+        context['listed_to_session'] = listed_to_session
+
         return context
 
 
@@ -116,3 +130,24 @@ class SessionDeleteView(LoginRequiredMixin, DeleteView):
             return redirect('presenterz:lecture_details', pk=lecture.pk)
         form.instance.time = self.request.POST.get('time')
         return super().form_valid(form)
+
+def partcipationCreate(request, session_pk):
+    session = Session.objects.get(pk=session_pk)
+    try:
+        participation = Participation.objects.create(user=request.user, session=session)
+    except IntegrityError:
+        print('Validation error')
+    return redirect('presenterz:lecture_details', session.lecture.pk)
+
+def paticipationDelete(request, session_pk):
+    session = Session.objects.get(pk=session_pk)
+    print('Hi')
+    user = request.user
+    try:
+        print('Suucesful delete should happen here')
+        participation = Participation.objects.get(user=user, session=session)
+        participation.delete()
+        print(participation)
+        return redirect('presenterz:lecture_details', session.lecture.pk)
+    except:
+        return redirect('presenterz:lecture_details', session.lecture.pk)

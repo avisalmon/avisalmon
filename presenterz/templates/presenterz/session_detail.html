@@ -1,14 +1,17 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<h1>Lecture {{ session.lecture.title }} by
+<h2>This is a session for lecture</h2>
+<h1>{{ session.lecture.title }}</h1>
+<h3><i>by
   {{ session.lecture.user.first_name }}
-  {{ session.lecture.user.last_name }}</h1>
+  {{ session.lecture.user.last_name }}</i></h3>
   <hr>
   {% if user == session.lecture.user %}
-  <b><p><a href={% url 'presenterz:session_update' session.pk %}>Edit</a></p></b>
-  <b><p><a href={% url 'presenterz:session_delete' session.pk %}>Delete</a></p></b>
+  <a class="btn btn-secondary" href={% url 'presenterz:session_update' session.pk %}>Edit  </a>
+  <a class="btn btn-secondary" href={% url 'presenterz:session_delete' session.pk %}>Delete  </a>
   {% endif %}
+  <a class="btn btn-secondary" href={% url 'presenterz:lecture_details' session.lecture.pk %}>Back to lecture</a></b>
 
 <p>Place: {{ session.location }}</p>
  <p>Time: {{ session.time }}</p>
@@ -17,7 +20,20 @@
  <p><a href={{ session.link.url }}>Link to registration</a></p>
  {% endif %}
  <hr>
- <p><b><a href={% url 'presenterz:lecture_details' session.lecture.pk %}>Back to lecture</a></b></p>
+ <h3>Who is coming? </h3>
+ {% if not session.participants.all %}
+ <p>No one is comming yet...</p>
+ <p><a href={% url 'presenterz:participation_create' session.pk %}>Want to be the first to join? </a></p>
+ {% else %}
+ <ul>
+   {% for participant in session.participants.all %}
+  <li>{{ participant.first_name}} {{ participant.last_name }}</li>
+   {% endfor %}
+ </ul>
+ <p><a href={% url 'presenterz:participation_create' session.pk %}>Want to join? </a></p>
+ {% endif %}
+
+
 
 
 {% endblock %}

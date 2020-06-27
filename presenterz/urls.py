@@ -30,4 +30,10 @@ urlpatterns = [
     path('session/delete/<int:pk>',
          views.SessionDeleteView.as_view(),
          name='session_delete'),
+    path('participation/create/<int:session_pk>',
+         views.partcipationCreate,
+         name='participation_create'),
+    path('participation/delete/<int:session_pk>',
+         views.paticipationDelete,
+         name='participation_delete'),
 ]

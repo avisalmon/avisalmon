@@ -11,7 +11,7 @@ class UserCreateForm(UserCreationForm):
                          label='Email',
                          error_messages={'exists': 'Such email exists in the system'})
 
-    bio = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    #bio = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
     class Meta:
         fields = ("username", "email", "password1", "password2")
@@ -19,7 +19,7 @@ class UserCreateForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["username"].label = "Display name"
+        self.fields["username"].label = "User Name"
         self.fields["email"].label = "Email address"
 
     def save(self, commit=True):
