@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if session.lecture.user != user %}
+<h1>You are not allowed to delete. It is not your Lecture! Go away. </h1>
+<a href={% url 'presenterz:lecture_details' session.lecture.pk %}>Go back to Lecture</a>
+{% else %}
+
+<form method="post">{% csrf_token %}
+<input type="hidden" name="lectue" value={{ session.lecture.pk }} >
+<p>Are you sure you want to delete the lecture: "{{ session }}"?</p>
+<input type="submit" value="Confirm">
+</form>
+
+{% endif %}
+
+{% endblock %}

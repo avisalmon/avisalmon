@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from main import views as main_views
+from matazim import views as matazim_views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
@@ -23,6 +24,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.home, name='home'),
+    path('matazim/', include('matazim.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('main/', include('main.urls')),
     path('presenterz/', include('presenterz.urls')),
@@ -32,6 +34,6 @@ urlpatterns = [
     path('randg/', include('randg.urls')),
     path('portfolio/', include('portfolio.urls')),
     path('todo/', include('todo.urls')),
-]
+    ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

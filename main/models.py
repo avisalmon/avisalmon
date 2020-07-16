@@ -24,6 +24,8 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     image = models.ImageField(upload_to='main/images/', blank=True, null=True)
+    mataz = models.BooleanField(default=False)
+    fake = models.BooleanField(default=False)
 
     def __str__(self):
         return f'Profile for {self.user}'

@@ -141,7 +141,7 @@ def partcipationCreate(request, session_pk):
 
 def paticipationDelete(request, session_pk):
     session = Session.objects.get(pk=session_pk)
-    print('Hi')
+
     user = request.user
     try:
         print('Suucesful delete should happen here')

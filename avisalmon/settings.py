@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'todo',
     'presenterz',
     'markdownx',
+    'matazim',
 ]
 
 MIDDLEWARE = [
