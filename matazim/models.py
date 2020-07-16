@@ -7,7 +7,7 @@ from main.models import Profile
 class Program(models.Model):
     name = models.CharField(max_length=50)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    description = models.TextField(max_length=250, blank=True)
+    description = models.TextField(max_length=5000, blank=True)
     link = models.URLField(max_length=200, blank=True)
     image = models.ImageField(upload_to='matazim/images/', blank=True)
     members = models.ManyToManyField(Profile, blank=True)
